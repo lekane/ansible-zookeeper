@@ -1,0 +1,11 @@
+tickTime=2000
+dataDir=/var/lib/zookeeper/data
+dataLogDir=/var/lib/zookeeper/datalog
+clientPort=2181
+initLimit=5
+syncLimit=2
+#clientPortBindAddress=0.0.0.0
+
+{% for node in groups['zookeeper']  %}
+server.{{ hostvars[node].zookeeper_id }}={{ hostvars[node].inventory_hostname }}:2888:3888
+{% endfor %}

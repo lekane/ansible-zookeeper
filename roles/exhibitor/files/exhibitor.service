@@ -1,0 +1,11 @@
+[Unit]
+Description=Exhibitor service
+
+[Service]
+Type=simple
+User=zookeeper
+Group=zookeeper
+Restart=always
+WorkingDirectory=/opt/exhibitor
+
+ExecStart=/opt/exhibitor/exhibitor.sh

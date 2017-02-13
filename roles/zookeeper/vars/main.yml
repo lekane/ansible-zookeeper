@@ -1,0 +1,4 @@
+zookeeper_version: 3.4.9
+zookeeper_name: "zookeeper-{{ zookeeper_version }}"
+zookeeper_file: "{{ zookeeper_name }}.tar.gz"
+zookeeper_url: "http://www-eu.apache.org/dist/zookeeper/zookeeper-{{ zookeeper_version }}/{{ zookeeper_file }}"

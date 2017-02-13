@@ -1,0 +1,16 @@
+---
+- name: ZooKeeper base installation
+  hosts: zookeeper
+  user: "{{ install_user }}"
+  become: yes
+  environment: "{{ proxy_env }}"
+  roles:
+    - zookeeper
+
+- name: Exhibitor installation
+  hosts: zookeeper
+  user: "{{ install_user }}"
+  become: yes
+  environment: "{{ proxy_env }}"
+  roles:
+    - exhibitor

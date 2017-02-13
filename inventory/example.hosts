@@ -1,0 +1,19 @@
+[zookeeper]
+<node1> zookeeper_id=1
+<node2> zookeeper_id=2
+<node3> zookeeper_id=3
+
+[zookeeper:vars]
+install_user=root
+s3_config_location=<bucket>:<key>
+java_opts="-Xmx500M -Xms128M -XX:MaxPermSize=256M"
+heading_text="[Production]"
+
+s3_access_key=<access_key>
+s3_secret_key=<secret_key>
+
+# AWS
+zoo_cfg_extra=syncLimit=5&tickTime=2000&initLimit=10
+# Private cloud / NAT
+#zoo_cfg_extra=syncLimit=5&tickTime=2000&initLimit=10&quorumListenOnAllIPs=true&clientPortBindAddress=0.0.0.0
+# exhibitor_s3_endpoint=<S3 endpoint>

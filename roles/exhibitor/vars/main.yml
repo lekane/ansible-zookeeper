@@ -1,0 +1,6 @@
+exhibitor_version: 1.5.6
+exhibitor_file: exhibitor-{{ exhibitor_version }}.jar
+exhibitor_port: 8080
+ui_style: red
+heading_text: "[Production]"
+instances_settling_period: 300000
