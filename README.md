@@ -26,7 +26,7 @@ Create a S3 bucket for shared configuration storage.
 
 Run Ansible to provision ZooKeeper:
 
-ansible-playbook -i <inventory> zookeeper.yml
+ansible-playbook -i inventory_file zookeeper.yml
 
 ## Using non-AWS S3
 
