@@ -1,11 +1,44 @@
+# The number of milliseconds of each tick
 tickTime=2000
-dataDir=/var/lib/zookeeper/data
-dataLogDir=/var/lib/zookeeper/datalog
-clientPort=2181
+# The number of ticks that the initial
+# synchronization phase can take
 initLimit=5
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
 syncLimit=2
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just
+# example sakes.
+dataDir=/var/lib/zookeeper/data
+# the port at which the clients will connect
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to "0" to disable auto purge feature
+#autopurge.purgeInterval=1
+#
+# this option will direct the machine to write the transaction log to the
+# dataLogDir rather than the dataDir. This allows a dedicated log device
+# to be used, and helps avoid competition between logging and snapshots.
+# Note
+# Having a dedicated log device has a large impact on throughput and stable
+# latencies. It is highly recommended to dedicate a log device and set
+# dataLogDir to point to a directory on that device, and then make sure to
+# point dataDir to a directory not residing on that device.
+dataLogDir=/var/lib/zookeeper/datalog
+#
 #clientPortBindAddress=0.0.0.0
-
+#
 {% for node in groups['zookeeper']  %}
 server.{{ hostvars[node].zookeeper_id }}={{ hostvars[node].inventory_hostname }}:2888:3888
 {% endfor %}

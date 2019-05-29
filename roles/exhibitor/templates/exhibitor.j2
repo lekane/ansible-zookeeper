@@ -2,4 +2,4 @@
 
 export JAVA_OPTS="{{ java_opts }}"
 
-java {% if exhibitor_s3_endpoint %}-Dexhibitor-s3-endpoint="{{ exhibitor_s3_endpoint }}"{% endif %} -jar /opt/exhibitor/exhibitor.jar -c s3 --hostname "{{ inventory_hostname  }}" --port "{{ exhibitor_port }}" --defaultconfig /opt/exhibitor/exhibitor.properties --s3credentials /opt/exhibitor/zookeeper-s3-credentials.properties --s3config "{{ s3_config_location }}" {% if exhibitor_s3_endpoint %}--s3region external {% endif %} --headingtext "{{ heading_text }}" --jquerystyle "{{ ui_style }}" >> /opt/exhibitor/exhibitor.log 2>&1
+java {% if exhibitor_s3_endpoint %}-Dexhibitor-s3-endpoint="{{ exhibitor_s3_endpoint }}"{% endif %} -jar /opt/exhibitor/exhibitor.jar -c s3 --hostname "{{ inventory_hostname  }}" --port "{{ exhibitor_port }}" --defaultconfig /opt/exhibitor/exhibitor.properties --s3credentials /opt/exhibitor/zookeeper-s3-credentials.properties --s3config "{{ s3_config_location }}" {% if exhibitor_s3_endpoint %}--s3region "{{ s3_region }}" {% endif %} --headingtext "{{ heading_text }}" --jquerystyle "{{ ui_style }}" >> /opt/exhibitor/exhibitor.log 2>&1

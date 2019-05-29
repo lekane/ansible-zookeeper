@@ -4,3 +4,4 @@ exhibitor_port: 8080
 ui_style: red
 heading_text: "[Production]"
 instances_settling_period: 300000
+proxy_env:

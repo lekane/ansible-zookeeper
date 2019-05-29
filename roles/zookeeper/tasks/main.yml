@@ -1,19 +1,7 @@
 ---
 
-- name: Add Oracle Java PPA repo
-  apt_repository: repo='ppa:webupd8team/java'
-
-- name: Accept Oracle license (1/2)
-  shell: "echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections"
-
-- name: Accept Oracle license (2/2)
-  shell: "echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections"
-
-- name: Update APT cache
-  apt: update_cache=true
-
-- name: Install Oracle Java
-  apt: name=oracle-java8-installer state=latest
+- name: Install OpenJDK {{ openjdk_java_version }} Java
+  apt: name=openjdk-{{ openjdk_java_version }}-jdk state=latest
 
 - name: Create ZooKeeper group
   group: name=zookeeper state=present
@@ -21,14 +9,14 @@
 - name: Create ZooKeeper user
   user: name=zookeeper shell=/bin/bash home=/opt/zookeeper createhome=no group=zookeeper
 
-- name: Download ZooKeeper
+- name: Download ZooKeeper version {{ zookeeper_version }}
   get_url: "url={{ zookeeper_url }} dest=/tmp/{{ zookeeper_file }}"
 
 - name: Extract ZooKeeper
-  unarchive: "src=/tmp/{{ zookeeper_file }} dest=/opt remote_src=True"
+  unarchive: "src=/tmp/{{ zookeeper_file }} dest=/opt remote_src=yes"
 
 - name: Create ZooKeeper "zookeeper" symlink
-  file: "src=/opt/{{ zookeeper_name }} dest=/opt/zookeeper state=link"
+  file: "src=/opt/{{ zookeeper_name }} dest=/opt/zookeeper owner=zookeeper group=zookeeper state=link"
 
 - name: Create ZooKeeper data dir
   file: path=/var/lib/zookeeper/data state=directory owner=zookeeper group=zookeeper mode=0770
@@ -43,18 +31,21 @@
   file: path=/var/log/zookeeper state=directory owner=zookeeper group=zookeeper mode=0770
 
 - name: Template zoo.cfg
-  template: src=zoo.j2 dest=/opt/zookeeper/conf/zoo.cfg owner=zookeeper group=zookeeper mode=0660
+  template: src=zoo.j2 dest=/opt/zookeeper/conf/zoo.cfg owner=zookeeper group=zookeeper mode=0660 backup=yes
 
 - name: Copy log4j.properties
-  copy: src=log4j.properties dest=/opt/zookeeper/conf/log4j.properties owner=zookeeper group=zookeeper mode=0664
+  copy: src=log4j.properties dest=/opt/zookeeper/conf/log4j.properties owner=zookeeper group=zookeeper mode=0664 backup=yes
 
 - name: Set myid
   shell: "echo {{ zookeeper_id }} > /var/lib/zookeeper/data/myid"
 
 - name: Fix file permissions
-  shell: chown -R zookeeper:zookeeper {{ item }}
-  changed_when: false
+  file:
+    path: "{{ item }}"
+    state: directory
+    recurse: yes
+    owner: zookeeper
+    group: zookeeper
   with_items:
-  - /opt/zookeeper
-  - /opt/{{ zookeeper_name }}
-  - /var/lib/zookeeper
+    - /opt/{{ zookeeper_name }}
+    - /var/lib/zookeeper
