@@ -2,10 +2,22 @@
 - name: Create ZooKeeper Exhibitor dir
   file: path=/opt/exhibitor state=directory owner=zookeeper group=zookeeper mode=0770
 
-## TODO: Build Exhibitor jar locally
+- name: Create Exhibitor build dir
+  file: path=/tmp/exhibitor state=directory mode=0777
+
+- name: Download Exhibitor pom.xml file
+  get_url: "url=https://raw.github.com/Netflix/exhibitor/master/exhibitor-standalone/src/main/resources/buildscripts/standalone/maven/pom.xml dest=/tmp/exhibitor/pom.xml"
+
+- name: Install maven
+  apt: name=maven state=present
+
+- name: Build Exhibitor
+  shell: mvn clean package
+  args:
+    chdir: "/tmp/exhibitor"
 
 - name: Copy Exhibitor jar
-  copy: "src={{ exhibitor_file }} dest=/opt/exhibitor/{{ exhibitor_file }} owner=zookeeper group=zookeeper mode=0550 force=no"
+  copy: "src=/tmp/exhibitor/target/{{ exhibitor_file }} dest=/opt/exhibitor/{{ exhibitor_file }} remote_src=yes mode=0550 force=no"
 
 - name: Change Exhibitor permissions
   file: "path=/opt/exhibitor/{{ exhibitor_file }} owner=zookeeper group=zookeeper mode=0550"
