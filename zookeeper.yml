@@ -21,3 +21,12 @@
   environment: "{{ proxy_env }}"
   roles:
     - exhibitor
+
+- name: Kafka Manager installation
+  hosts: zookeeper
+  user: "{{ install_user }}"
+  become: yes
+  gather_facts: no
+  environment: "{{ proxy_env }}"
+  roles:
+    - kafka_manager
