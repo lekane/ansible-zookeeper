@@ -1,5 +1,0 @@
-kafka_manager_version: 2.0.0.2
-kafka_manager_name: "kafka-manager-{{ kafka_manager_version }}"
-kafka_manager_file: "{{ kafka_manager_version }}.tar.gz"
-kafka_manager_url: "https://github.com/yahoo/kafka-manager/archive/{{ kafka_manager_file }}"
-proxy_env:
